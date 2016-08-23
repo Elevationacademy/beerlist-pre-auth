@@ -103,16 +103,29 @@ app.delete('/beers/:beer/reviews/:review', function(req, res, next) {
 });
 
 passport.serializeUser(function (user, done) {
+
+  user = {
+    username: user.username,
+    _id: user._id
+  };
+
   done(null, user);
 });
 
 passport.deserializeUser(function (user, done) {
+  
+  user = {
+    username: user.username,
+    _id: user._id
+  };
+
   done(null, user);
 });
 
 //passport-local strategy for authenticate
 var LocalStrategy = require('passport-local').Strategy;
 
+// instance of register local strategy
 passport.use('register', new LocalStrategy(function (username, password, done) {
 
   User.findOne({ 'username': username }, function (err, user) {
@@ -125,8 +138,8 @@ passport.use('register', new LocalStrategy(function (username, password, done) {
   // already exists
   if (user) {
     console.log('User already exists');
-    return done(null, false);
-    
+    return done(null, user);
+
   } else {
     // if there is no user with that matches
     // create the user
@@ -150,6 +163,35 @@ passport.use('register', new LocalStrategy(function (username, password, done) {
 });
 }));
 
+// instance of login local strategy
+passport.use('login', new LocalStrategy(function (username, password, done) {
+
+  User.findOne({ 'username': username }, function (err, user) {
+  // In case of any error return
+  if (err) {
+    console.log('Error in SignUp: ' + err);
+    return done(err);
+  }
+
+  // wrong user object
+  if (!user) {
+    console.log('Wrong user');
+    return done(null, false);
+  }
+
+  // wrong user password
+  if (password !== user.password) {
+    console.log('Wrong password');
+    return done(null, false);
+  }
+
+  // existsting user
+  console.log('Existing user login');
+  return done(null, user);
+
+});
+}));
+
 //register route
 app.post('/register', passport.authenticate('register'), function(req, res) {
   res.json(req.user);
@@ -159,6 +201,20 @@ app.post('/register', passport.authenticate('register'), function(req, res) {
 app.get('/currentUser', function (req, res) {
   res.send(req.user);
 });
+
+//login route
+app.post('/login', passport.authenticate('login'), function(req, res) {
+  res.json(req.user);
+});
+
+// logout route
+app.get('/logout', function(req, res){
+  req.logout();
+  console.log("Logged out!")
+  res.redirect('/');
+});
+
+
 
 app.listen(8000);
 
