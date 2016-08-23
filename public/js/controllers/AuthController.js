@@ -13,4 +13,11 @@ app.controller('AuthCtrl', ['$scope', 'auth', '$state', function($scope, auth, $
       $state.go('home');
     });
   };
+
+  $scope.getCurrentUser = function() {
+    auth.getCurrentUser($scope.user).then(function() {
+      $state.go('home');
+    });
+  };
+  
 }]);
