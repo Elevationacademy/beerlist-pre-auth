@@ -6,6 +6,8 @@ mongoose.connect('mongodb://localhost/beers-auth');
 
 var Beer = require("./models/BeerModel");
 var Review = require("./models/ReviewModel");
+var User = require("./models/UserModel");
+
 
 var app = express();
 
@@ -26,11 +28,13 @@ app.use(expressSession({ secret: 'mySecretKey' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
+
 app.get('/beers', function (req, res) {
   Beer.find(function (error, beers) {
     res.send(beers);
   });
 });
+
 
 app.post('/beers', function (req, res, next) {
   var beer = new Beer(req.body);
@@ -40,11 +44,6 @@ app.post('/beers', function (req, res, next) {
 
     res.json(beer);
   });
-});
-
-//register route
-app.post('/register', passport.authenticate('register'), function (req, res) {
-  res.json(req.user);
 });
 
 
@@ -103,4 +102,45 @@ app.delete('/beers/:beer/reviews/:review', function(req, res, next) {
   });
 });
 
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function (user, done) {
+  done(null, user);
+});
+
+//passport-local strategy for authenticate
+var LocalStrategy = require('passport-local').Strategy;
+
+passport.use('register', new LocalStrategy(function (username, password, done) {
+
+  var user = {
+    username: username,
+    password: password
+  }
+
+  console.log(user);
+
+  done(null, user);
+}));
+
+//register route
+app.post('/register', passport.authenticate('register'), function(req, res) {
+  res.json(req.user);
+});
+
+// send the current user back!
+app.get('/currentUser', function (req, res) {
+  res.send(req.user);
+});
+
 app.listen(8000);
+
+
+
+
+
+
+
+
