@@ -1,6 +1,7 @@
 var app = angular.module('beerList', ['ui.router']);
 
 app.config(['$stateProvider','$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+  
   $stateProvider
     .state('home', {
       url: '/home',
@@ -15,6 +16,11 @@ app.config(['$stateProvider','$urlRouterProvider', function($stateProvider, $url
     .state('register', {
       url: '/register',
       templateUrl: '/templates/register.html',
+      controller: 'AuthCtrl'
+    })
+    .state('login', {
+      url: '/login',
+      templateUrl: '/templates/login.html',
       controller: 'AuthCtrl'
     })
 
