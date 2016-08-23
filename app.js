@@ -115,14 +115,39 @@ var LocalStrategy = require('passport-local').Strategy;
 
 passport.use('register', new LocalStrategy(function (username, password, done) {
 
-  var user = {
-    username: username,
-    password: password
+  User.findOne({ 'username': username }, function (err, user) {
+  // In case of any error return
+  if (err) {
+    console.log('Error in SignUp: ' + err);
+    return done(err);
   }
 
-  console.log(user);
+  // already exists
+  if (user) {
+    console.log('User already exists');
+    return done(null, false);
+    
+  } else {
+    // if there is no user with that matches
+    // create the user
+    var newUser = new User();
 
-  done(null, user);
+    // set the user's local credentials
+    newUser.username = username;
+    newUser.password = password;    // Note: Should create a hash out of this plain password!
+
+    // save the user
+    newUser.save(function (err) {
+      if (err) {
+        console.log('Error in Saving user: ' + err);
+        throw err;
+      }
+
+      console.log('User Registration successful');
+      return done(null, newUser);
+    });
+  }
+});
 }));
 
 //register route
