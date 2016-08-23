@@ -1,4 +1,4 @@
-app.factory('auth', ['$http', '$q', '$rootScope', function($http){
+app.factory('auth', ['$http', '$q', '$rootScope', function($http, $q, $rootScope){
   
   var auth = {}; //empty object
 
@@ -9,7 +9,7 @@ app.factory('auth', ['$http', '$q', '$rootScope', function($http){
     };
 
 
-  auth.logIn = function(user){
+  auth.login = function(user){
 
     return $http.post('/login', user).then(function (response) {
       auth.setCurrentUser(response.data.username);
@@ -25,14 +25,22 @@ app.factory('auth', ['$http', '$q', '$rootScope', function($http){
 
   auth.setCurrentUser = function (user) {
     auth.currentUser = user;
+
     $rootScope.$broadcast("currentUserChange", user);
 };
 
 
   auth.getCurrentUser = function() {
 
-  return $http.get('/currentUser').then(function(response) {
-    auth.setCurrentUser(response.data.username);
+    if (auth.currentUser) {
+
+      $rootScope.userLoggedIn = true;
+    } else {
+      
+      $rootScope.userLoggedIn = false;
+    }
+    return $http.get('/currentUser').then(function(response) {
+      auth.setCurrentUser(response.data.username);
   });
 }
 

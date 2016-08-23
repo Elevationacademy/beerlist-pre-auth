@@ -1,4 +1,4 @@
-app.controller('MainCtrl', ['$scope','beers', function($scope, beers){
+app.controller('MainCtrl', ['$scope','beers', 'auth', function($scope, beers, auth){
 
   // invoking getCurrentUser method
   auth.getCurrentUser();

@@ -103,7 +103,6 @@ app.delete('/beers/:beer/reviews/:review', function(req, res, next) {
 });
 
 passport.serializeUser(function (user, done) {
-
   user = {
     username: user.username,
     _id: user._id
@@ -113,7 +112,6 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (user, done) {
-  
   user = {
     username: user.username,
     _id: user._id

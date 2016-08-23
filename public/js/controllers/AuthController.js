@@ -10,7 +10,7 @@ app.controller('AuthCtrl', ['$scope', 'auth', '$state', function($scope, auth, $
   // existing user login
   $scope.login = function() {
     auth.login($scope.user).then(function() {
-      $state.go('home');
+      $state.go('home')
       
     }, function(error) {
       $scope.error = error.data;
