@@ -11,6 +11,9 @@ app.controller('AuthCtrl', ['$scope', 'auth', '$state', function($scope, auth, $
   $scope.login = function() {
     auth.login($scope.user).then(function() {
       $state.go('home');
+      
+    }, function(error) {
+      $scope.error = error.data;
     });
   };
 
