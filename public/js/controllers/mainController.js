@@ -1,4 +1,13 @@
-app.controller('MainCtrl', ['$scope','beers', function($scope, beers){
+app.controller('MainCtrl', ['$scope','beers', 'auth', function($scope, beers, auth){
+
+  // invoking getCurrentUser method
+  auth.getCurrentUser();
+
+  
+  $scope.$on('currentUserChange', function() {
+  $scope.currentUser = auth.currentUser;
+});
+
   beers.getAll().then(function () {
     $scope.beers = beers.beers;
   });

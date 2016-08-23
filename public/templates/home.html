@@ -1,21 +1,3 @@
-<div ng-repeat="beer in beers">
-  <div class="beer">
-    <div class="img-container">
-      <img ng-src="{{beer.image_url}}"/>
-    </div>
-
-    <div class="content-container">
-      <p class="beer-name">{{beer.name}}</p>
-      <p>{{beer.style}} - {{beer.abv}}% ABV</p>
-    </div>
-
-    <p>
-      <a href="#/beers/{{beer._id}}">reviews</a>
-    </p>
-
-    <i ng-click="removeBeer(beer)" class="fa fa-times remove"></i>
-  </div>
-</div>
 
 <form ng-submit="addBeer()">
   <h3>Add a new beer</h3>
@@ -38,3 +20,28 @@
 
   <button type="submit" class="btn btn-primary">Add</button>
 </form>
+
+<br>
+<br>
+
+<div ng-repeat="beer in beers">
+  <div class="beer">
+    <div class="img-container">
+      <img ng-src="{{beer.image_url}}"/>
+    </div>
+
+    <div class="content-container">
+      <p class="beer-name">{{beer.name}}</p>
+      <p>{{beer.style}} - {{beer.abv}}% ABV</p>
+    </div>
+
+    <p>
+      <a href="#/beers/{{beer._id}}">reviews</a>
+    </p>
+
+    <i ng-click="removeBeer(beer)" class="fa fa-times remove"></i>
+  </div>
+</div>
+
+
+<hr>

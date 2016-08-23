@@ -8,6 +8,9 @@
 
 <div ng-repeat="review in beer.reviews track by $index">
   <p class="review-body">
+    <div class="img-container">
+      <img ng-src="{{beer.image_url}}"/>
+    </div>
     <i ng-click="removeReview(review)" class="fa fa-times remove"></i>
     {{review.text}}
   </p>
